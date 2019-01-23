@@ -3,13 +3,10 @@ import React, { Component } from 'react';
 
 class Member extends Component {
 
-	shouldComponenentUpdate(nextProps, nextState) {
-		return true;
-	}
-
 	state = {
-		instrInputs: 0,
-		tmfrmInputs: 0
+		instrInputs: 1,
+		tmfrmInputs: 1,
+		inputs: 1
 	}
 
 	handleAddInstrument(e) {
@@ -26,24 +23,27 @@ class Member extends Component {
   		}));
 	}
 
+	handleAddInstrumentTimeFrame(e) {
+		e.preventDefault();
+		this.setState(prevState => ({
+  			inputs: prevState.inputs + 1
+  		}));
+	}
+
 	render() {
 
 		return (
-			<div>
+			<div className={"member"}>
 				<input type="text" name="memberbame" placeholder="name" style={{verticalAlign: 'top'}}></input>
 				<div style={{display: 'inline-block', width: 20}}></div>
-
+				<button onClick={this.handleAddInstrumentTimeFrame.bind(this)}>+</button>
 				<div style={{display: 'inline-block', verticalAlign: 'top'}}>
-					<input type="text" name="instrument" placeholder="instrument" style={{display: 'inline-block'}}></input>
-					<button onClick={this.handleAddInstrument.bind(this)} style={{display: 'inline-block'}}>+</button>
-					<div>{Array(this.state.instrInputs).fill(<input type="text" name="instrument" placeholder="instrument" style={{display: 'block', marginRight: 0}}></input>)}</div>
+					<div>{Array(this.state.inputs).fill(<input type="text" name="instrument" placeholder="instrument" style={{display: 'block', marginRight: 0}}></input>)}</div>
 	          	</div>
 
 				<div style={{display: 'inline-block', width: 20}}></div>
 	        	<div style={{display: 'inline-block', verticalAlign: 'top'}}>
-				    <input type="text" name="time" placeholder="timeframe"></input>
-				    <button onClick={this.handleAddTimeFrame.bind(this)} style={{display: 'inline-block'}}>+</button>
-				    <div>{Array(this.state.tmfrmInputs).fill(<input type="text" name="timeframe" placeholder="timeframe" style={{display: 'block', marginRight: 0}}></input>)}</div>
+				    <div>{Array(this.state.inputs).fill(<input type="text" name="timeframe" placeholder="timeframe" style={{display: 'block', marginRight: 0}}></input>)}</div>
 	      		</div>
 			</div>
 		)

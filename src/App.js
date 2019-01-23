@@ -5,42 +5,7 @@ import Member from './Member';
 
 class App extends Component {
 
-	numberMemberLine(num) {
-		return (
-			<div id={num}>
-        {[
-          [
-				  <input type="text" name="memberbame" placeholder="name"></input>
-          ], 
-          [
-				  <div style={{display: 'inline-block', width: 20}}></div>
-          ],
-          [
-          <div style={{display: 'inline-block'}}>
-				  <button onClick={this.handleAddInstrument.bind(this)}>+</button>
-				  <input key={num} type="text" name="instrument" placeholder="instrument"></input>
-          </div>
-          ],
-          [
-				  <div style={{display: 'inline-block', width: 20}}></div>
-          ],
-          [ 
-          <div style={{display: 'inline-block'}}>
-				    <button onClick={this.handleAddTimeframe.bind(this)}>+</button>
-				    <input type="text" name="time" placeholder="timeframe"></input>
-          </div>
-          ]
-        ]}
-			</div>
-		)
-	}
-
-
-
   	state = {
-  		forms: [
-  			[this.numberMemberLine(0)]
-  		],
       members: 1
   	};
 
@@ -51,56 +16,48 @@ class App extends Component {
   	  }))
     }
 
-  	handleAddInstrument(e) {
-  		e.preventDefault();
-  		const index = e.currentTarget.parentElement.id;
+    handleSubmit(e) {
+      e.preventDefault()
+      const members = []
 
-  		this.setState(prevState => {
-  			const forms = prevState.forms.map((item, i) => {
-  				if(i == index) {
-            console.log("item", item)
-  					return item.concat(
-              <div id={"instr"} style={{display: 'block'}}>
-  						  <input type="text" name="instrument" placeholder="instrument" style={{}}></input>
-              </div>
-  					);
-  				}
-  				else return item;
-  			})
-  			return {
-  				forms: forms
-  			}
-  		});
-  	}
+      e.target.childNodes.forEach(node => {
+        if(node.classList.contains("member")) {
 
-  	handleAddTimeframe(e) {
-  		e.preventDefault();
-      const index = e.currentTarget.parentElement.id;
+          const instruments = [], timeframes = [];
+          const instrNodes = node.childNodes[3].childNodes[0].childNodes;
+          const tmfrmNodes = node.childNodes[5].childNodes[0].childNodes;
+          instrNodes.forEach(instr => {
+            instruments.push(instr.value)
+          })
+          tmfrmNodes.forEach(tmfrm => {
+            timeframes.push(tmfrm.value)
+          })
+          console.log(instruments, timeframes)
 
-      this.setState(prevState => {
-        const forms = prevState.forms.map((item, i) => {
-          if(i == index) {
-            console.log("item", item)
-            return item.concat(
-              <div style={{display: 'block'}}>
-                <input type="text" name="time" placeholder="timeframe" style={{}}></input>
-              </div>
-            );
-          }
-          else return item;
-        })
-        return {
-          forms: forms
+          members.push({
+            name: node.childNodes[0].value,
+            instruments: instruments,
+            timeframe: timeframes
+          })
         }
-      });
-  	}
+      })
 
+      this.setState({
+        data: {
+          bandName: e.target.childNodes[1].value,
+          members: members
+        }
+      })
+
+      
+
+    }
   	
 
 	render() {
 	    return (
 	      <div className="App">
-	        <form action="">
+	        <form action="" onSubmit={this.handleSubmit.bind(this)}>
 	        	<p>Band Name:</p>
 	        	<input type="text" name="bandname" placeholder="name"></input>
             <div>
@@ -108,6 +65,7 @@ class App extends Component {
 	        	  <p style={{display: 'inline-block'}}>Members:</p>
             </div>
             {Array(this.state.members).fill(<Member></Member>)}
+            <input type="submit" value="Submit"></input>
           </form>
 	      </div>
 	    );
