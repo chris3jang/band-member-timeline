@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+
+import Member from './Member';
 
 class App extends Component {
 
@@ -23,10 +24,10 @@ class App extends Component {
           [
 				  <div style={{display: 'inline-block', width: 20}}></div>
           ],
-          [
+          [ 
           <div style={{display: 'inline-block'}}>
-				  <button onClick={this.handleAddTimeframe.bind(this)}>+</button>
-				  <input type="text" name="time" placeholder="timeframe"></input>
+				    <button onClick={this.handleAddTimeframe.bind(this)}>+</button>
+				    <input type="text" name="time" placeholder="timeframe"></input>
           </div>
           ]
         ]}
@@ -34,19 +35,21 @@ class App extends Component {
 		)
 	}
 
+
+
   	state = {
   		forms: [
   			[this.numberMemberLine(0)]
-  		] 
+  		],
+      members: 1
   	};
 
   	handleAddMember(e) {
   		e.preventDefault();
   		this.setState(prevState => ({
-  			forms: [...prevState.forms, 
-  				[this.numberMemberLine(prevState.forms.length)]
-  			]}));
-  	}
+  			members: prevState.members + 1
+  	  }))
+    }
 
   	handleAddInstrument(e) {
   		e.preventDefault();
@@ -57,7 +60,7 @@ class App extends Component {
   				if(i == index) {
             console.log("item", item)
   					return item.concat(
-              <div style={{display: 'block'}}>
+              <div id={"instr"} style={{display: 'block'}}>
   						  <input type="text" name="instrument" placeholder="instrument" style={{}}></input>
               </div>
   					);
@@ -104,8 +107,8 @@ class App extends Component {
               <button style={{display: 'inline-block', margin: 'auto', marginTop: 10}} onClick={this.handleAddMember.bind(this)}>+</button>
 	        	  <p style={{display: 'inline-block'}}>Members:</p>
             </div>
-	        	{this.state.forms}
-	        </form>
+            {Array(this.state.members).fill(<Member></Member>)}
+          </form>
 	      </div>
 	    );
   }
