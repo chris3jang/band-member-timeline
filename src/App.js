@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import './App.css';
 
 import Member from './Member';
+import Gantt from './Gantt';
+import Chart from './Chart';
 
 class App extends Component {
 
   	state = {
-      members: 1
+      members: 1,
+      data: null
   	};
 
   	handleAddMember(e) {
@@ -32,7 +35,6 @@ class App extends Component {
           tmfrmNodes.forEach(tmfrm => {
             timeframes.push(tmfrm.value)
           })
-          console.log(instruments, timeframes)
 
           members.push({
             name: node.childNodes[0].value,
@@ -49,7 +51,7 @@ class App extends Component {
         }
       })
 
-      
+      console.log(this.state.data)
 
     }
   	
@@ -67,6 +69,7 @@ class App extends Component {
             {Array(this.state.members).fill(<Member></Member>)}
             <input type="submit" value="Submit"></input>
           </form>
+          {this.state.data !== null ? <Chart data={this.state.data}></Chart> : <div></div>}
 	      </div>
 	    );
   }

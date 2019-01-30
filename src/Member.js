@@ -43,7 +43,7 @@ class Member extends Component {
 
 				<div style={{display: 'inline-block', width: 20}}></div>
 	        	<div style={{display: 'inline-block', verticalAlign: 'top'}}>
-				    <div>{Array(this.state.inputs).fill(<input type="text" name="timeframe" placeholder="timeframe" style={{display: 'block', marginRight: 0}}></input>)}</div>
+				    <div>{Array(this.state.inputs).fill(<input type="text" name="timeframe" placeholder="timeframe (yy-yy)" style={{display: 'block', marginRight: 0}}></input>)}</div>
 	      		</div>
 			</div>
 		)
