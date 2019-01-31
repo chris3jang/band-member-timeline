@@ -21,6 +21,7 @@ class Chart extends Component {
 
 		const rowDivs = [];
 		let earliestYear = 19; // *&^ change to extract year from Date so this works next year without changing it
+		let latestYear = 20;
 
 		for(let i = 0; i < rows; i++) {
 
@@ -32,10 +33,10 @@ class Chart extends Component {
 			if((firstYear < earliestYear && earliestYear <= 19) || (firstYear > 20 && earliestYear <= 19)/* also change this *&^ */) {
 				earliestYear = firstYear;
 			}
-			
+
 
 			rowDivs.push(
-				<div style={{display: 'grid', gridTemplateColumns: '20% 80%', gridRowStart: i+1, gridRowEnd: i+2, gridColumnStart: 1, gridColumnEnd: 3}}>
+				<div style={{display: 'grid', gridTemplateColumns: '20% 75% 5%', gridRowStart: i+1, gridRowEnd: i+2, gridColumnStart: 1, gridColumnEnd: 3}}>
 					<div style={{gridColumnStart: 1, gridColumnEnd: 2, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
 						<p>{this.props.data.members[i].name}</p>
 					</div>
@@ -58,9 +59,23 @@ class Chart extends Component {
 					</div>
 				</div>
 				<div style={{display: 'grid', gridTemplateColumns: '20% auto 20%', gridTemplateRows: '30px'}}>
-					<div style={{gridColumnStart: 2, gridColumnEnd: 3, display: 'grid', gridTemplateColumns: '15% 10% 75%'}}>
-						<div style={{gridColumnStart: 2, gridColumnEnd: 3, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+					<div style={{gridColumnStart: 2, gridColumnEnd: 3, display: 'grid', gridTemplateColumns: '15% 5% 5% 65% 5% 5%', gridTemplateRows: '100%'}}>
+						<div style={{gridColumnStart: 3, gridColumnEnd: 6, gridRowStart: 1, gridRowEnd: 2, display: 'grid', gridTemplateRows: '50% 25% 25%', gridTemplateColumns: '12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%'}}>
+							<div style={{gridColumnStart: 1, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 3, borderLeft: 'thick solid #ff0000'}}></div>
+							<div style={{gridColumnStart: 2, gridColumnEnd: 3, gridRowStart: 1, gridRowEnd: 2, borderLeft: 'thick solid #ff0000'}}></div>
+							<div style={{gridColumnStart: 3, gridColumnEnd: 4, gridRowStart: 1, gridRowEnd: 2, borderLeft: 'thick solid #ff0000'}}></div>
+							<div style={{gridColumnStart: 4, gridColumnEnd: 5, gridRowStart: 1, gridRowEnd: 2, borderLeft: 'thick solid #ff0000'}}></div>
+							<div style={{gridColumnStart: 5, gridColumnEnd: 6, gridRowStart: 1, gridRowEnd: 3, borderLeft: 'thick solid #ff0000'}}></div>
+							<div style={{gridColumnStart: 6, gridColumnEnd: 7, gridRowStart: 1, gridRowEnd: 2, borderLeft: 'thick solid #ff0000'}}></div>
+							<div style={{gridColumnStart: 7, gridColumnEnd: 8, gridRowStart: 1, gridRowEnd: 2, borderLeft: 'thick solid #ff0000'}}></div>
+							<div style={{gridColumnStart: 8, gridColumnEnd: 9, gridRowStart: 1, gridRowEnd: 2, borderLeft: 'thick solid #ff0000'}}></div>
+							<div style={{gridColumnStart: 9, gridColumnEnd: 10, gridRowStart: 1, gridRowEnd: 3, borderLeft: 'thick solid #ff0000'}}></div>
+						</div>
+						<div style={{gridColumnStart: 2, gridColumnEnd: 4, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
 							<p>{earliestYear}</p>
+						</div>
+						<div style={{gridColumnStart: 5, gridColumnEnd: 7}}>
+							<p>{latestYear}</p>
 						</div>
 					</div>
 				</div>
