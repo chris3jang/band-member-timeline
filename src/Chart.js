@@ -7,6 +7,11 @@ class Chart extends Component {
 
 	render() {
 
+		const calcTimeFrame = (first, last) => {
+			if((first > 19 && last > 19)||(first <= 19 && last <= 19)) return last - first;
+			else return 100 - first + last;
+		}
+
 		const rows = this.props.data.members.length;
 
 		const height = 400;
@@ -20,8 +25,6 @@ class Chart extends Component {
 		console.log(piece)
 
 		const rowDivs = [];
-		let earliestYear = 19; // *&^ change to extract year from Date so this works next year without changing it
-		let latestYear = 20;
 
 		const allInstruments = [];
 		const colors = ['red', 'blue', 'yellow', 'green', 'orange', 'purple'];
@@ -54,8 +57,11 @@ class Chart extends Component {
 				{instrColorArray}
 			</div>
 		)
-		for(let i = 0; i < rows; i++) {
 
+
+		let earliestYear = 19; // *&^ change to extract year from Date so this works next year without changing it
+		let latestYear = 20;
+		for(let i = 0; i < rows; i++) {
 			let member = this.props.data.members[i]
 			let tf = member.timeframe[0]
 			let years = tf.split('-')
@@ -65,6 +71,55 @@ class Chart extends Component {
 			if((firstYear < earliestYear && ((firstYear <= 19 && earliestYear <= 19) || (firstYear >= 20 && earliestYear >= 20))) || (firstYear >= 20 && earliestYear <= 19)) earliestYear = firstYear;
 			if((lastYear > latestYear && ((lastYear <= 19 && latestYear <= 19) || (lastYear >= 20 && latestYear >= 20)))|| (lastYear <= 19 && latestYear >= 20)) latestYear = lastYear;
 
+		}
+
+		for(let i = 0; i < rows; i++) {
+
+			let member = this.props.data.members[i]
+			let tf = member.timeframe[0]
+			let years = tf.split('-')
+			let firstYear = parseInt(years[0])
+			let lastYear = parseInt(years[1])
+
+
+
+			let columnPercentage = calcTimeFrame(firstYear, lastYear)/(calcTimeFrame(earliestYear, latestYear))
+
+			//let absentTimeFrames = [];
+			let columnPercentageString = "";
+			let absentTimeFrame = [];
+			let start, end;
+			if(firstYear === earliestYear && lastYear === latestYear) {
+				columnPercentageString += '100%';
+			}
+			else if(firstYear === earliestYear) {
+				console.log(i, 'here1')
+				columnPercentageString += `${columnPercentage*100}` + '%';
+				columnPercentageString += " ";
+				columnPercentageString += `${(100 - (columnPercentage*100))}` + '%'
+				start = 1;
+				end = 2;
+			}
+			else if(lastYear === latestYear) {
+				console.log(i, 'here2')
+				columnPercentageString += `${(100 - (columnPercentage*100))}%`
+				columnPercentageString += " ";
+				columnPercentageString += `${columnPercentage*100}%`;
+				start = 2;
+				end = 3;
+			}
+			else {
+				columnPercentageString += `${calcTimeFrame(earliestYear, firstYear)*100/(calcTimeFrame(earliestYear, latestYear))}%`;
+				columnPercentageString += " ";
+				columnPercentageString += `${columnPercentage*100}%`;
+				columnPercentageString += " ";
+				columnPercentageString += `${calcTimeFrame(lastYear, latestYear)*100/(calcTimeFrame(earliestYear, latestYear))}%`;
+				start = 2;
+				end = 3;
+			}
+			console.log("column%String", i, columnPercentageString)
+
+
 
 			rowDivs.push(
 				<div style={{display: 'grid', gridTemplateColumns: '20% 75% 5%', gridRowStart: i+2, gridRowEnd: i+3, gridColumnStart: 1, gridColumnEnd: 3}}>
@@ -72,7 +127,9 @@ class Chart extends Component {
 						<p>{this.props.data.members[i].name}</p>
 					</div>
 					<div style={{gridColumnStart: 2, gridColumnEnd: 3, display: 'grid', gridTemplateRows: '20% 60% 20%', gridTemplateColumns: '12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%'}}>
-						<div style={{gridColumnStart: 1, gridColumnEnd: 9, gridRowStart: 2, gridRowEnd: 3, backgroundColor: instrumentColorTuples[this.props.data.members[i].instruments[0]]}}></div>
+						<div style={{gridColumnStart: 1, gridColumnEnd: 9, gridRowStart: 2, gridRowEnd: 3, display: 'grid', gridTemplateColumns: columnPercentageString}}>
+							<div style={{gridColumnStart: start, gridColumnEnd: end, backgroundColor: instrumentColorTuples[this.props.data.members[i].instruments[0]]}}></div>
+						</div>
 					</div>
 				</div>
 			)
