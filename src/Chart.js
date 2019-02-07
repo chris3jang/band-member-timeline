@@ -1,15 +1,38 @@
 import React, { Component } from 'react';
+import MemberRow from './MemberRow'
 
 class Chart extends Component {
 
-	state = {
-	}
-
 	render() {
+
+		const makeGridTemplate = (params) => {
+			const result = "";
+			for(let i = 0; i < params.length; i++) {
+				result += params[i];
+				if(i != params.length - 1) result+= " ";
+			}
+			return result;
+		}
 
 		const calcTimeFrame = (first, last) => {
 			if((first > 19 && last > 19)||(first <= 19 && last <= 19)) return last - first;
 			else return 100 - first + last;
+		}
+
+		const getEarliest = (years) => {
+			let earliestYear = 19;
+			years.forEach(year => {
+				if((year < earliestYear && ((year <= 19 && earliestYear <= 19) || (year >= 20 && earliestYear >= 20))) || (year >= 20 && earliestYear <= 19)) earliestYear = year;
+			})
+			return earliestYear;
+		}
+		
+		const getLatest = (years) => {
+			let latestYear = 20;
+			years.forEach(year => {
+				if((year > latestYear && ((year <= 19 && latestYear <= 19) || (year >= 20 && latestYear >= 20)))|| (year <= 19 && latestYear >= 20)) latestYear = year;
+			})
+			return latestYear;
 		}
 
 		const rows = this.props.data.members.length;
@@ -127,16 +150,21 @@ class Chart extends Component {
 						<p>{this.props.data.members[i].name}</p>
 					</div>
 					<div style={{gridColumnStart: 2, gridColumnEnd: 3, display: 'grid', gridTemplateRows: '20% 60% 20%', gridTemplateColumns: '12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%'}}>
-						<div style={{gridColumnStart: 1, gridColumnEnd: 9, gridRowStart: 2, gridRowEnd: 3, display: 'grid', gridTemplateColumns: columnPercentageString}}>
-							<div style={{gridColumnStart: start, gridColumnEnd: end, backgroundColor: instrumentColorTuples[this.props.data.members[i].instruments[0]]}}></div>
-						</div>
+						<MemberRow 
+							columnPercentageString={columnPercentageString}
+							data={this.props.data.members[i]} 
+							start={start} end={end} 
+							earliestYear={earliestYear} latestYear={latestYear}
+							color={instrumentColorTuples[this.props.data.members[i].instruments[0]]} 
+							calcTimeFrame={calcTimeFrame}
+							getEarliest={getEarliest} getLatest={getLatest}
+						/>
 					</div>
 				</div>
 			)
 		}
-
+		
 		console.log(rowDivs)
-
 
 
 		return (
