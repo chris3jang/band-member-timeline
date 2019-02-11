@@ -6,9 +6,10 @@ class Chart extends Component {
 	render() {
 
 		const makeGridTemplate = (params) => {
-			const result = "";
+			let result = "";
 			for(let i = 0; i < params.length; i++) {
-				result += params[i];
+				result += params[i].toString();
+				result += "%";
 				if(i != params.length - 1) result+= " ";
 			}
 			return result;
@@ -34,6 +35,8 @@ class Chart extends Component {
 			})
 			return latestYear;
 		}
+
+
 
 		const rows = this.props.data.members.length;
 
@@ -72,7 +75,6 @@ class Chart extends Component {
 
 		console.log('allInstruments', allInstruments)
 		console.log('instrumentColorTuples', instrumentColorTuples)
-
 
 		
 		rowDivs.push(
@@ -142,6 +144,10 @@ class Chart extends Component {
 			}
 			console.log("column%String", i, columnPercentageString)
 
+			const memberColors = {};
+			for(let j = 0; j < this.props.data.members[i].instruments.length; j++) {
+				memberColors[this.props.data.members[i].instruments[j]] = instrumentColorTuples[this.props.data.members[i].instruments[j]]
+			}
 
 
 			rowDivs.push(
@@ -155,8 +161,9 @@ class Chart extends Component {
 							data={this.props.data.members[i]} 
 							start={start} end={end} 
 							earliestYear={earliestYear} latestYear={latestYear}
-							color={instrumentColorTuples[this.props.data.members[i].instruments[0]]} 
-							calcTimeFrame={calcTimeFrame}
+							color={instrumentColorTuples[this.props.data.members[i].instruments[0]]}
+							colors={memberColors} 
+							calcTimeFrame={calcTimeFrame} makeGridTemplate={makeGridTemplate}
 							getEarliest={getEarliest} getLatest={getLatest}
 						/>
 					</div>
@@ -164,7 +171,7 @@ class Chart extends Component {
 			)
 		}
 		
-		console.log(rowDivs)
+
 
 
 		return (
