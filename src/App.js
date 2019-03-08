@@ -51,7 +51,7 @@ class App extends Component {
         }
       })
 
-      console.log(this.state.data)
+      console.log("!!!", this.state.data)
 
     }
   	

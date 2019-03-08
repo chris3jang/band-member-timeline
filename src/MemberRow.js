@@ -5,6 +5,12 @@ class MemberRow extends Component {
 	render() {
 		console.log('this.props.colors', this.props.colors);
 
+		const addYears = (a, b) => {
+			let result = a + b;
+			if(result >= 100) result -= 100;
+			return result;
+		}
+
 		const firstYears = [], lastYears = [];
 		this.props.data.timeframe.forEach((timeframe) => {
 			const years = timeframe.split('-');
@@ -14,6 +20,8 @@ class MemberRow extends Component {
 
 		const earliestYear = this.props.getEarliest(firstYears);
 		const latestYear = this.props.getLatest(lastYears)
+		console.log('earliestYear', earliestYear)
+		console.log('latestYear', latestYear)
 
 		const divs = [...new Set([...firstYears, ...lastYears])];
 		const orderedDivs = [];
@@ -25,6 +33,8 @@ class MemberRow extends Component {
 			divs.splice(index, 1);
 		}
 
+		console.log('orderedDivs', orderedDivs)
+
 		const divsLength = this.props.calcTimeFrame(earliestYear, latestYear)
 		const divPercentages = []
 		for(let i = 0; i < orderedDivs.length - 1; i++) {
@@ -33,23 +43,63 @@ class MemberRow extends Component {
 		console.log('divPercentages', divPercentages)
 
 		const timeframes = {};
+		let totalInstrNum = 0;
+
+
+
 		for(let i = 0; i < this.props.data.instruments.length; i++) {
-			const range = this.props.data.timeframe[i].split('-');
-			timeframes[[this.props.data.instruments[i]]] = [parseInt(range[0]), parseInt(range[1])]
+			const range = [];
+			range.push(parseInt(this.props.data.timeframe[i].split('-')[0]));
+			range.push(parseInt(this.props.data.timeframe[i].split('-')[1]));
+			/*
+			if(timeframes[[this.props.data.instruments[i]]]) {
+				const prevEarliest = timeframes[[this.props.data.instruments[i]]][0];
+				const prevLatest = timeframes[[this.props.data.instruments[i]]][1];
+			}
+			const currEarliest = this.props.getEarliest([prevEarliest, parseInt(range[0])])
+			const currLatest = this.props.getLatest([prevLatest, parseInt(range[1])])
+			*/
+
+			if(typeof timeframes[[this.props.data.instruments[i]]] === 'undefined') {
+				timeframes[[this.props.data.instruments[i]]] = [];
+			}
+			timeframes[[this.props.data.instruments[i]]].push([range[0], range[1]]);
 		}
+
+
+		console.log('timeframes', timeframes)
 
 		const instrumentOverlap = [];
 		for(let i = 0; i < this.props.calcTimeFrame(earliestYear, latestYear); i++) {
 			instrumentOverlap.push([]);
 		}
 
+
+
 		for(let i = 0; i < instrumentOverlap.length; i++) {
 			console.log('i', i)
 			for(let j = 0; j < this.props.data.instruments.length; j++) {
-				for(let k = 0; k < this.props.calcTimeFrame(timeframes[this.props.data.instruments[j]][0], timeframes[this.props.data.instruments[j]][1]); k++) {
-					console.log('k', k)
-					console.log('timeframes[this.props.data.instruments[j]][0]', timeframes[this.props.data.instruments[j]][0])
-					if(timeframes[this.props.data.instruments[j]][0] + k === earliestYear + i) instrumentOverlap[i].push(this.props.data.instruments[j]);
+				console.log('j', j)
+				//for(let k = 0; k < this.props.calcTimeFrame(timeframes[this.props.data.instruments[j]][0], timeframes[this.props.data.instruments[j]][1]); k++) {
+					
+				for(let k = 0; k < timeframes[this.props.data.instruments[j]].length; k++) {
+
+					for(let l = 0; l < this.props.calcTimeFrame(timeframes[this.props.data.instruments[j]][k][0], timeframes[this.props.data.instruments[j]][k][1]); l++) {
+						
+						if(addYears(timeframes[this.props.data.instruments[j]][k][0], l) === addYears(earliestYear, i)) {
+							if(instrumentOverlap[i].indexOf(this.props.data.instruments[j]) === -1) {
+								instrumentOverlap[i].push(this.props.data.instruments[j]);
+							}
+						}
+						/*
+						if(addYears(timeframes[this.props.data.instruments[j]][0], k) === addYears(earliestYear, i)) {
+							if(instrumentOverlap[i].indexOf(this.props.data.instruments[j]) === -1) {
+								instrumentOverlap[i].push(this.props.data.instruments[j]);
+							}
+						}
+						*/
+
+					}
 				}
 			}
 		}
@@ -115,23 +165,19 @@ class MemberRow extends Component {
 		const divRows = [];
 		const row = [], rows = [];
 		const rowTemp = [], rowTemplate = [];
-		let percent, key;
+		let percent;
 
 		for(let i = 0; i < instrumentComboOrder.length; i++) {
+			percent = 100 / instrumentComboOrder[i].length / 2;
 			for(let j = 0; j < instrumentComboOrder[i].length; j++) {
-				percent = 100 / instrumentComboOrder[i].length / 2;
 				rowTemp.unshift(percent);
 				rowTemp.push(percent);
-				key = instrumentComboOrder[i][j];
-				console.log("key", key)
-				console.log("SDAFKJD;D", this.props.colors, instrumentComboOrder[i][j])
-				console.log('shouldbecolor', this.props.colors[key])
 				row.unshift(
-					<div style={{gridRowStart: j+1, gridRowEnd: j+2, backgroundColor: this.props.colors[instrumentComboOrder[i][j]]}}>
+					<div className="upperHalfColor" style={{gridRowStart: instrumentComboOrder[i].length - j, gridRowEnd: instrumentComboOrder[i].length - j + 1, backgroundColor: this.props.colors[instrumentComboOrder[i][j]]}}>
 					</div>
 				)
 				row.push(
-					<div style={{gridRowStart: instrumentComboOrder[i].length * 2 - j, gridRowEnd:instrumentComboOrder[i].length * 2 + 1 - j, backgroundColor: this.props.colors[instrumentComboOrder[i][j]]}}>
+					<div className="lowerHalfColor" style={{gridRowStart: instrumentComboOrder[i].length + j + 1, gridRowEnd:instrumentComboOrder[i].length + j + 2, backgroundColor: this.props.colors[instrumentComboOrder[i][j]]}}>
 					</div>
 				)
 			}
@@ -145,40 +191,34 @@ class MemberRow extends Component {
 		
 		const divColumns = [];
 		for(let i = 0; i < instrumentComboOrder.length; i++) {
+			console.log('divColumns i', i, this.props.makeGridTemplate(rowTemplate[i]), rows[i])
 			divColumns.push(
-				<div style = {{gridColumnStart: i+1, gridColumnEnd: i+2, display: 'grid', gridTemplateRows: this.props.makeGridTemplate(rowTemplate[i])}}>
+				<div className="rowsContainer" style = {{gridColumnStart: i+1, gridColumnEnd: i+2, display: 'grid', gridTemplateRows: this.props.makeGridTemplate(rowTemplate[i])}}>
 					{rows[i]}
 				</div>
 			);
 		}
 
+		console.log('divColumns', divColumns)
 
-		/*
-		for(let i = 1; i < this.props.data.instruments.length; i++) {
-			console.log(i)
+		console.log('789', earliestYear, latestYear, this.props.earliestYear, this.props.latestYear)
 
-			let start = timeframes[this.props.data.instruments[i]][0];
-			let end = timeframes[this.props.data.instruments[i]][1];
-			for(let j = start; j < end; j++) {
+		let columnPercentageLeft = this.props.calcTimeFrame(this.props.earliestYear, earliestYear)*100/(this.props.calcTimeFrame(this.props.earliestYear, this.props.latestYear))
+		let columnPercentage = this.props.calcTimeFrame(earliestYear, latestYear)*100/(this.props.calcTimeFrame(this.props.earliestYear, this.props.latestYear))
+		let columnPercentageRight = this.props.calcTimeFrame(latestYear, this.props.latestYear)*100/(this.props.calcTimeFrame(this.props.earliestYear, this.props.latestYear))
 
-			}
-			this.props.data.instruments[i]
+		const cP = []
+		cP.push(columnPercentageLeft)
+		cP.push(columnPercentage)
+		cP.push(columnPercentageRight)
 
-			if(i === this.props.data.instruments[ind+1][0]) {
-				//timeframes[[this.props.data.instruments[ind], this.props.data.instruments]]
-			}
-		}
-
-		timeframes[this.props.data.instruments[0]][1] - timeframes[this.props.data.instruments[0]][0]
-		*/
-
-		let columnPercentage = this.props.calcTimeFrame(earliestYear, latestYear)/(this.props.calcTimeFrame(this.props.earliestYear, this.props.latestYear))
+		console.log('SDKLFJLKD', this.props.makeGridTemplate(cP))
 
 		return (
-			<div style={{gridColumnStart: 1, gridColumnEnd: 9, gridRowStart: 2, gridRowEnd: 3, display: 'grid', gridTemplateColumns: this.props.columnPercentageString}}>
-				<div style={{
-					gridColumnStart: this.props.start, 
-					gridColumnEnd: this.props.end, 
+			<div className="MemberRowRoot" style={{gridColumnStart: 1, gridColumnEnd: 9, gridRowStart: 2, gridRowEnd: 3, display: 'grid', gridTemplateColumns: this.props.makeGridTemplate(cP)}}>
+				<div className="divColumnsContainer" style={{
+					gridColumnStart: 2, 
+					gridColumnEnd: 3, 
 					display: 'grid',
 					gridTemplateColumns: this.props.makeGridTemplate(divPercentages)}}>
 					{divColumns}

@@ -38,15 +38,15 @@ class Chart extends Component {
 
 
 
-		const rows = this.props.data.members.length;
+		const numMembers = this.props.data.members.length;
 
 		const height = 400;
-		const gTR = height/(rows+1);
+		const gTR = height/(numMembers+1);
 
 		let piece = "";
-		for(let i = 0; i < (rows+1); i++) {
+		for(let i = 0; i < (numMembers+1); i++) {
 			piece+=`${gTR}px`;
-			if(i != rows) piece+=" ";
+			if(i != numMembers) piece+=" ";
 		}
 		console.log(piece)
 
@@ -54,7 +54,7 @@ class Chart extends Component {
 
 		const allInstruments = [];
 		const colors = ['red', 'blue', 'yellow', 'green', 'orange', 'purple'];
-		for(let i = 0; i < rows; i++) {
+		for(let i = 0; i < numMembers; i++) {
 			this.props.data.members[i].instruments.forEach(instrument=> {
 				if(!allInstruments.includes(instrument)) allInstruments.push(instrument);
 			})
@@ -84,21 +84,31 @@ class Chart extends Component {
 		)
 
 
-		let earliestYear = 19; // *&^ change to extract year from Date so this works next year without changing it
+		let earliestYear = 19;
 		let latestYear = 20;
-		for(let i = 0; i < rows; i++) {
-			let member = this.props.data.members[i]
-			let tf = member.timeframe[0]
-			let years = tf.split('-')
-			let firstYear = parseInt(years[0])
-			let lastYear = parseInt(years[1])
 
-			if((firstYear < earliestYear && ((firstYear <= 19 && earliestYear <= 19) || (firstYear >= 20 && earliestYear >= 20))) || (firstYear >= 20 && earliestYear <= 19)) earliestYear = firstYear;
-			if((lastYear > latestYear && ((lastYear <= 19 && latestYear <= 19) || (lastYear >= 20 && latestYear >= 20)))|| (lastYear <= 19 && latestYear >= 20)) latestYear = lastYear;
+		const firstYears = [], lastYears = [];
+		let years, member;
+
+		for(let i = 0; i < numMembers; i++) {
+			member = this.props.data.members[i];
+			member.timeframe.forEach((timeframe) => {
+				years = timeframe.split('-');
+				firstYears.push(parseInt(years[0]))
+				lastYears.push(parseInt(years[1]))
+			})
+
+			//if((firstYear < earliestYear && ((firstYear <= 19 && earliestYear <= 19) || (firstYear >= 20 && earliestYear >= 20))) || (firstYear >= 20 && earliestYear <= 19)) earliestYear = firstYear;
+			//if((lastYear > latestYear && ((lastYear <= 19 && latestYear <= 19) || (lastYear >= 20 && latestYear >= 20)))|| (lastYear <= 19 && latestYear >= 20)) latestYear = lastYear;
 
 		}
 
-		for(let i = 0; i < rows; i++) {
+		earliestYear = getEarliest(firstYears);
+		latestYear = getLatest(lastYears)
+		console.log('earliestYear', earliestYear)
+		console.log('latestYear', latestYear)
+
+		for(let i = 0; i < numMembers; i++) {
 
 			let member = this.props.data.members[i]
 			let tf = member.timeframe[0]
@@ -178,7 +188,7 @@ class Chart extends Component {
 			<div>
 				<div style={{height: 50}}></div>
 				<div style={{display: 'grid', gridTemplateColumns: '20% auto 20%', gridTemplateRows: 400}}>
-					<div style={{display: 'grid', gridColumnStart: 2, gridColumnEnd: 3, gridRowStart: 1, gridRowEnd: rows+2, border: '1px solid black', gridTemplateRows: piece}}>
+					<div style={{display: 'grid', gridColumnStart: 2, gridColumnEnd: 3, gridRowStart: 1, gridRowEnd: numMembers+2, border: '1px solid black', gridTemplateRows: piece}}>
 						{rowDivs}
 					</div>
 				</div>
