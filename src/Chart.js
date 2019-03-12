@@ -40,20 +40,21 @@ class Chart extends Component {
 
 		const numMembers = this.props.data.members.length;
 
-		const height = 400;
-		const gTR = height/(numMembers+1);
+		const height = 500;
+		const gTR = height/(numMembers+2);
 
 		let piece = "";
-		for(let i = 0; i < (numMembers+1); i++) {
+		for(let i = 0; i < (numMembers+2); i++) {
 			piece+=`${gTR}px`;
-			if(i != numMembers) piece+=" ";
+			if(i != numMembers + 1) piece+=" ";
 		}
-		console.log(piece)
+		console.log('piece',piece)
 
 		const rowDivs = [];
 
 		const allInstruments = [];
-		const colors = ['red', 'blue', 'yellow', 'green', 'orange', 'purple'];
+		const colors = ['#4e79a7', '#59a14f', '#e15759', '#edc948', '#f28e2b', '#b07aa1', '#ff9da7', '#76b7b2', '#9c755f', '#bab0ac'];
+		//['red', 'blue', 'yellow', 'green', 'orange', 'purple']
 		for(let i = 0; i < numMembers; i++) {
 			this.props.data.members[i].instruments.forEach(instrument=> {
 				if(!allInstruments.includes(instrument)) allInstruments.push(instrument);
@@ -76,9 +77,14 @@ class Chart extends Component {
 		console.log('allInstruments', allInstruments)
 		console.log('instrumentColorTuples', instrumentColorTuples)
 
-		
 		rowDivs.push(
 			<div style={{gridRowStart: 1, gridRowEnd: 2, gridColumnStart: 1, gridColumnEnd: 3, display: 'flex', alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly', }}>
+				<h1>{this.props.data.bandName}</h1>
+			</div>
+		)
+		
+		rowDivs.push(
+			<div style={{gridRowStart: 2, gridRowEnd: 3, gridColumnStart: 1, gridColumnEnd: 3, display: 'flex', alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly', }}>
 				{instrColorArray}
 			</div>
 		)
@@ -105,8 +111,6 @@ class Chart extends Component {
 
 		earliestYear = getEarliest(firstYears);
 		latestYear = getLatest(lastYears)
-		console.log('earliestYear', earliestYear)
-		console.log('latestYear', latestYear)
 
 		for(let i = 0; i < numMembers; i++) {
 
@@ -128,7 +132,6 @@ class Chart extends Component {
 				columnPercentageString += '100%';
 			}
 			else if(firstYear === earliestYear) {
-				console.log(i, 'here1')
 				columnPercentageString += `${columnPercentage*100}` + '%';
 				columnPercentageString += " ";
 				columnPercentageString += `${(100 - (columnPercentage*100))}` + '%'
@@ -136,7 +139,6 @@ class Chart extends Component {
 				end = 2;
 			}
 			else if(lastYear === latestYear) {
-				console.log(i, 'here2')
 				columnPercentageString += `${(100 - (columnPercentage*100))}%`
 				columnPercentageString += " ";
 				columnPercentageString += `${columnPercentage*100}%`;
@@ -152,7 +154,6 @@ class Chart extends Component {
 				start = 2;
 				end = 3;
 			}
-			console.log("column%String", i, columnPercentageString)
 
 			const memberColors = {};
 			for(let j = 0; j < this.props.data.members[i].instruments.length; j++) {
@@ -161,7 +162,7 @@ class Chart extends Component {
 
 
 			rowDivs.push(
-				<div style={{display: 'grid', gridTemplateColumns: '20% 75% 5%', gridRowStart: i+2, gridRowEnd: i+3, gridColumnStart: 1, gridColumnEnd: 3}}>
+				<div style={{display: 'grid', gridTemplateColumns: '20% 75% 5%', gridRowStart: i+3, gridRowEnd: i+4, gridColumnStart: 1, gridColumnEnd: 3}}>
 					<div style={{gridColumnStart: 1, gridColumnEnd: 2, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
 						<p>{this.props.data.members[i].name}</p>
 					</div>
@@ -187,23 +188,23 @@ class Chart extends Component {
 		return (
 			<div>
 				<div style={{height: 50}}></div>
-				<div style={{display: 'grid', gridTemplateColumns: '20% auto 20%', gridTemplateRows: 400}}>
-					<div style={{display: 'grid', gridColumnStart: 2, gridColumnEnd: 3, gridRowStart: 1, gridRowEnd: numMembers+2, border: '1px solid black', gridTemplateRows: piece}}>
+				<div className="chartBorder" style={{display: 'grid', gridTemplateColumns: '20% auto 20%', gridTemplateRows: 400}}>
+					<div style={{display: 'grid', gridColumnStart: 2, gridColumnEnd: 3, gridRowStart: 1, gridRowEnd: numMembers+3, border: '1px solid black', gridTemplateRows: piece}}>
 						{rowDivs}
 					</div>
 				</div>
 				<div style={{display: 'grid', gridTemplateColumns: '20% auto 20%', gridTemplateRows: '30px'}}>
 					<div style={{gridColumnStart: 2, gridColumnEnd: 3, display: 'grid', gridTemplateColumns: '15% 5% 5% 65% 5% 5%', gridTemplateRows: '100%'}}>
 						<div style={{gridColumnStart: 3, gridColumnEnd: 6, gridRowStart: 1, gridRowEnd: 2, display: 'grid', gridTemplateRows: '50% 25% 25%', gridTemplateColumns: '12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%'}}>
-							<div style={{gridColumnStart: 1, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 3, borderLeft: 'thick solid #ff0000'}}></div>
-							<div style={{gridColumnStart: 2, gridColumnEnd: 3, gridRowStart: 1, gridRowEnd: 2, borderLeft: 'thick solid #ff0000'}}></div>
-							<div style={{gridColumnStart: 3, gridColumnEnd: 4, gridRowStart: 1, gridRowEnd: 2, borderLeft: 'thick solid #ff0000'}}></div>
-							<div style={{gridColumnStart: 4, gridColumnEnd: 5, gridRowStart: 1, gridRowEnd: 2, borderLeft: 'thick solid #ff0000'}}></div>
-							<div style={{gridColumnStart: 5, gridColumnEnd: 6, gridRowStart: 1, gridRowEnd: 3, borderLeft: 'thick solid #ff0000'}}></div>
-							<div style={{gridColumnStart: 6, gridColumnEnd: 7, gridRowStart: 1, gridRowEnd: 2, borderLeft: 'thick solid #ff0000'}}></div>
-							<div style={{gridColumnStart: 7, gridColumnEnd: 8, gridRowStart: 1, gridRowEnd: 2, borderLeft: 'thick solid #ff0000'}}></div>
-							<div style={{gridColumnStart: 8, gridColumnEnd: 9, gridRowStart: 1, gridRowEnd: 2, borderLeft: 'thick solid #ff0000'}}></div>
-							<div style={{gridColumnStart: 9, gridColumnEnd: 10, gridRowStart: 1, gridRowEnd: 3, borderLeft: 'thick solid #ff0000'}}></div>
+							<div style={{gridColumnStart: 1, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 3, borderLeft: 'thick solid black'}}></div>
+							<div style={{gridColumnStart: 2, gridColumnEnd: 3, gridRowStart: 1, gridRowEnd: 2, borderLeft: 'thick solid black'}}></div>
+							<div style={{gridColumnStart: 3, gridColumnEnd: 4, gridRowStart: 1, gridRowEnd: 2, borderLeft: 'thick solid black'}}></div>
+							<div style={{gridColumnStart: 4, gridColumnEnd: 5, gridRowStart: 1, gridRowEnd: 2, borderLeft: 'thick solid black'}}></div>
+							<div style={{gridColumnStart: 5, gridColumnEnd: 6, gridRowStart: 1, gridRowEnd: 3, borderLeft: 'thick solid black'}}></div>
+							<div style={{gridColumnStart: 6, gridColumnEnd: 7, gridRowStart: 1, gridRowEnd: 2, borderLeft: 'thick solid black'}}></div>
+							<div style={{gridColumnStart: 7, gridColumnEnd: 8, gridRowStart: 1, gridRowEnd: 2, borderLeft: 'thick solid black'}}></div>
+							<div style={{gridColumnStart: 8, gridColumnEnd: 9, gridRowStart: 1, gridRowEnd: 2, borderLeft: 'thick solid black'}}></div>
+							<div style={{gridColumnStart: 9, gridColumnEnd: 10, gridRowStart: 1, gridRowEnd: 3, borderLeft: 'thick solid black'}}></div>
 						</div>
 						<div style={{gridColumnStart: 2, gridColumnEnd: 4, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
 							<p>{earliestYear}</p>

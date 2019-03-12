@@ -161,6 +161,7 @@ class MemberRow extends Component {
 			}
 			toCheck = instrumentComboOrder[i+1];
 		}
+		
 		console.log('instrumentComboOrder', instrumentComboOrder)
 		const divRows = [];
 		const row = [], rows = [];

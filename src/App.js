@@ -59,6 +59,7 @@ class App extends Component {
 	render() {
 	    return (
 	      <div className="App">
+          {this.state.data !== null ? <Chart data={this.state.data}></Chart> : 
 	        <form action="" onSubmit={this.handleSubmit.bind(this)}>
 	        	<p>Band Name:</p>
 	        	<input type="text" name="bandname" placeholder="name"></input>
@@ -68,8 +69,7 @@ class App extends Component {
             </div>
             {Array(this.state.members).fill(<Member></Member>)}
             <input type="submit" value="Submit"></input>
-          </form>
-          {this.state.data !== null ? <Chart data={this.state.data}></Chart> : <div></div>}
+          </form>}
 	      </div>
 	    );
   }
