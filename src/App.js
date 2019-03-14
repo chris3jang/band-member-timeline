@@ -4,13 +4,22 @@ import './App.css';
 import Member from './Member';
 import Gantt from './Gantt';
 import Chart from './Chart';
+import DataForm from './DataForm';
 
 class App extends Component {
 
   	state = {
-      members: 1,
+      //members: 1,
       data: null
   	};
+
+    updateData(data) {
+      this.setState({
+        data: data
+      });
+    };
+
+    /*
 
   	handleAddMember(e) {
   		e.preventDefault();
@@ -54,22 +63,17 @@ class App extends Component {
       console.log("!!!", this.state.data)
 
     }
+
+    */
   	
 
 	render() {
 	    return (
 	      <div className="App">
           {this.state.data !== null ? <Chart data={this.state.data}></Chart> : 
-	        <form action="" onSubmit={this.handleSubmit.bind(this)}>
-	        	<p>Band Name:</p>
-	        	<input type="text" name="bandname" placeholder="name"></input>
-            <div>
-              <button style={{display: 'inline-block', margin: 'auto', marginTop: 10}} onClick={this.handleAddMember.bind(this)}>+</button>
-	        	  <p style={{display: 'inline-block'}}>Members:</p>
-            </div>
-            {Array(this.state.members).fill(<Member></Member>)}
-            <input type="submit" value="Submit"></input>
-          </form>}
+          <DataForm
+            updateData={this.updateData.bind(this)}>
+          </DataForm>}
 	      </div>
 	    );
   }
