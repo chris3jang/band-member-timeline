@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Member from './Member';
-import FormErrors from './FormErrors';
+//import FormErrors from './FormErrors';
 
 class DataForm extends Component {
 
@@ -42,7 +42,53 @@ class DataForm extends Component {
 	        }
 	    })
 
-	    
+	    //validation
+	    if(!e.target.childNodes[1].value) {
+	    	//band name cannot be empty
+	    }
+
+	    const data = {
+	    	bandName: e.target.childNodes[1].value,
+			members: members
+	    }
+
+	    console.log('ERRORS', data)
+
+	    if(!data.bandName) {
+	    	console.log("EMPTY BAND NAME")
+	    }
+
+	    const emptyMemberNameIndexes = [];
+	    const emptyInstrumentIndexes = [];
+	    const emptyTimeFrameIndexes = [];
+	    const invalidTimeFrameIndexes = [];
+	    data.members.forEach((member, i) => {
+	    	console.log(member, 'member')
+	    	if(!member.name) {
+	    		emptyMemberNameIndexes.push(i);
+	    	}
+	    	member.instruments.forEach((instr, j) => {
+	    		if(!instr) {
+	    			emptyInstrumentIndexes.push([i, j]);
+	    		}
+	    	})
+	    	member.timeframe.forEach((tf, j) => {
+	    		if(!tf) {
+	    			emptyTimeFrameIndexes.push([i, j]);
+	    		}
+	    		console.log('tf.substring(0, 2)', tf.substring(0, 2), !isNaN(parseFloat(tf.substring(0, 2))) && isFinite(tf.substring(0, 2)))
+	    		console.log('tf.substring(3, 5)', tf.substring(3, 5), !isNaN(parseFloat(tf.substring(3, 5))) && isFinite(tf.substring(3, 5)))
+	    		console.log('tf.substring(2, 3)', tf.substring(2, 3))
+	    		if((!(!isNaN(parseFloat(tf.substring(0, 2))) && isFinite(tf.substring(0, 2)))) || (!(!isNaN(parseFloat(tf.substring(3, 5))) && isFinite(tf.substring(3, 5)))) || tf.substring(2, 3) !== '-' || tf.length !== 5) {
+	    			invalidTimeFrameIndexes.push([i, j]);
+	    		}
+	    	})
+	    })
+
+	    console.log("EMPTY NAME ERROR INDEXES:", emptyMemberNameIndexes);
+	    console.log("EMPTY INSTR ERROR INDEXES:", emptyInstrumentIndexes);
+	    console.log("EMPTY TIMEFRAME ERROR INDEXES:", emptyTimeFrameIndexes);
+	    console.log("INVALID TIMEFRAME ERROR INDEXES:", invalidTimeFrameIndexes);
 
 
       	this.props.updateData({
@@ -66,7 +112,6 @@ class DataForm extends Component {
 		            {Array(this.state.members).fill(<Member></Member>)}
 					<input type="submit" value="Submit"></input>
 				</form>
-				<FormErrors></FormErrors>
 			</div>
 		)
 	}
