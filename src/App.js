@@ -22,7 +22,7 @@ class App extends Component {
 
 	render() {
 	    return (
-	      <div className="App">
+	      <div className="App" style={{fontFamily: 'Helvetica'}}>
           {this.state.data !== null ? <Chart data={this.state.data}></Chart> : 
           <DataForm
             updateData={this.updateData.bind(this)}>

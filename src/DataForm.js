@@ -6,7 +6,7 @@ class DataForm extends Component {
 
 	state = {
     	members: 1,
-    	valid: false,
+    	errors: [],
     	data: null
   	}
 
@@ -93,7 +93,6 @@ class DataForm extends Component {
 	    console.log("EMPTY TIMEFRAME ERROR INDEXES:", emptyTimeFrameIndexes);
 	    console.log("INVALID TIMEFRAME ERROR INDEXES:", invalidTimeFrameIndexes);
 
-	    console.log('TARGET', e.target.getElementsByClassName('member'))
 
 	    const memberEls = e.target.getElementsByClassName('member');
 	    let instrInputEls = [], tfInputEls = [];
@@ -132,9 +131,29 @@ class DataForm extends Component {
 	    if(isValid) {
 	      	this.props.updateData({
 	      		bandName: e.target.childNodes[1].value,
-				members: members
+				members: members,
 	      	})
 	    }
+	    else {
+	    	let errors = [];
+	    	errors.push(<p style={{color: 'red'}}>Form Errors:</p>)
+	    	if(!data.bandName) errors.push(<p style={{color: 'red'}}>Band name cannot be empty.</p>);
+	    	if(emptyMemberNameIndexes.length > 0) {
+	    		errors.push(<p style={{color: 'red'}}>Member name cannot be empty.</p>);
+	    	}
+	    	if(emptyInstrumentIndexes.length > 0) {
+	    		errors.push(<p style={{color: 'red'}}>Instrument cannot be empty.</p>);
+	    	}
+	    	if(emptyTimeFrameIndexes.length > 0) {
+	    		errors.push(<p style={{color: 'red'}}>Timeframe cannot be empty.</p>);
+	    	}
+	    	if(invalidTimeFrameIndexes.length > 0) {
+	    		errors.push(<p style={{color: 'red'}}>Timeframe format incorrect.  Use last 2 digits of start year, followed by a single hyphen, followed by last 2 digits of end year, without spaces.</p>);
+	    	}
+	    	this.setState({errors: errors})
+	    }
+
+
     }
 
 
@@ -150,6 +169,12 @@ class DataForm extends Component {
 			        	<p style={{display: 'inline-block'}}>Members:</p>
 		            </div>
 		            {Array(this.state.members).fill(<Member></Member>)}
+		            {this.state.errors.length > 0 
+					? 
+					<p style={{color: 'red'}}>{this.state.errors}</p>
+					:
+					<div></div>
+					}
 					<input className="sbmtButton" type="submit" value="Submit"></input>
 				</form>
 			</div>
