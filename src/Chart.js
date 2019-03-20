@@ -189,7 +189,7 @@ class Chart extends Component {
 			<div>
 				<div style={{height: 50}}></div>
 				<div className="chartBorder" style={{display: 'grid', gridTemplateColumns: '20% auto 20%', gridTemplateRows: 400}}>
-					<div style={{display: 'grid', gridColumnStart: 2, gridColumnEnd: 3, gridRowStart: 1, gridRowEnd: numMembers+3, border: '1px solid black', gridTemplateRows: piece}}>
+					<div style={{display: 'grid', gridColumnStart: 2, gridColumnEnd: 3, gridRowStart: 1, gridRowEnd: numMembers+3, border: '1px solid black', borderRadius: 20, gridTemplateRows: piece}}>
 						{rowDivs}
 					</div>
 				</div>

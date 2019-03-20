@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Member from './Member';
-//import FormErrors from './FormErrors';
+import './form.css';
 
 class DataForm extends Component {
 
@@ -128,6 +128,7 @@ class DataForm extends Component {
 	    	}
 	    }
 
+
 	    if(isValid) {
 	      	this.props.updateData({
 	      		bandName: e.target.childNodes[1].value,
@@ -141,15 +142,15 @@ class DataForm extends Component {
 
 		return (
 			<div>
-				<form action="" onSubmit={this.handleSubmit.bind(this)}>
-			        <p className="BandName">Band Name:</p>
-			        <input type="text" name="bandname" placeholder="name"></input>
+				<form className="form" action="" onSubmit={this.handleSubmit.bind(this)}>
+			        <p className={"BandName"}>Band Name:</p>
+			        <input className="textInput" type="text" name="bandname" placeholder="name"></input>
 		            <div>
-		            	<button style={{display: 'inline-block', margin: 'auto', marginTop: 10}} onClick={this.handleAddMember.bind(this)}>+</button>
+            			<button className="addButton" onClick={this.handleAddMember.bind(this)}>+</button>
 			        	<p style={{display: 'inline-block'}}>Members:</p>
 		            </div>
 		            {Array(this.state.members).fill(<Member></Member>)}
-					<input type="submit" value="Submit"></input>
+					<input className="sbmtButton" type="submit" value="Submit"></input>
 				</form>
 			</div>
 		)

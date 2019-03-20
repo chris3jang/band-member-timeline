@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './form.css';
 
 
 class Member extends Component {
@@ -34,16 +35,16 @@ class Member extends Component {
 
 		return (
 			<div className={"member"}>
-				<input type="text" name="memberbame" placeholder="name" style={{verticalAlign: 'top'}}></input>
+				<input className="textInput" type="text" name="memberbame" placeholder="name" style={{verticalAlign: 'top'}}></input>
 				<div style={{display: 'inline-block', width: 20}}></div>
-				<button onClick={this.handleAddInstrumentTimeFrame.bind(this)}>+</button>
+				<button className="addButton" onClick={this.handleAddInstrumentTimeFrame.bind(this)}>+</button>
 				<div style={{display: 'inline-block', verticalAlign: 'top'}}>
-					<div>{Array(this.state.inputs).fill(<input type="text" name="instrument" placeholder="instrument" style={{display: 'block', marginRight: 0}}></input>)}</div>
+					<div>{Array(this.state.inputs).fill(<input className="textInput" type="text" name="instrument" placeholder="instrument" style={{display: 'block', marginRight: 0}}></input>)}</div>
 	          	</div>
 
 				<div style={{display: 'inline-block', width: 20}}></div>
 	        	<div style={{display: 'inline-block', verticalAlign: 'top'}}>
-				    <div>{Array(this.state.inputs).fill(<input type="text" name="timeframe" placeholder="timeframe (yy-yy)" style={{display: 'block', marginRight: 0}}></input>)}</div>
+				    <div>{Array(this.state.inputs).fill(<input className="textInput" type="text" name="timeframe" placeholder="timeframe (yy-yy)" style={{display: 'block', marginRight: 0}}></input>)}</div>
 	      		</div>
 			</div>
 		)

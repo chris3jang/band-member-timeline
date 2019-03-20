@@ -1,0 +1,43 @@
+.form {
+	margin: 50px auto;
+	padding: 40px;
+	width: 80%;
+	border: 1px solid black;
+	border-radius: 20px;
+}
+
+.textInput {
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-bottom: 1px solid #9e9e9e;
+	width: 300px;
+	height: 30px;
+}
+
+.textInput:focus {
+	outline: none;
+	border-bottom: 1px solid black;
+}
+
+.addButton {
+	background-color: #9e9e9e;
+	border: none;
+	color: white;
+	text-align: center;
+	border-radius: 3px;
+	margin-top: 12px;
+	margin-right: 10px;
+	padding: 4px 8px;
+}
+
+.sbmtButton {
+	margin-top: 30px;
+	background-color: #9e9e9e;
+	border: none;
+	color: white;
+	padding: 15px 32px;
+  	text-align: center;
+  	font-size: 16px;
+  	border-radius: 5px;
+}
