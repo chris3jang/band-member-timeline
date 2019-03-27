@@ -40,8 +40,8 @@ class Chart extends Component {
 
 		const numMembers = this.props.data.members.length;
 
-		const height = 500;
-		const gTR = height/(numMembers+2);
+		const adjustedHeight = (numMembers > 8) ? (400 + (numMembers - 8) * 50) : 400;
+		const gTR = adjustedHeight/(numMembers+2);
 
 		let piece = "";
 		for(let i = 0; i < (numMembers+2); i++) {
@@ -79,7 +79,7 @@ class Chart extends Component {
 
 		rowDivs.push(
 			<div style={{gridRowStart: 1, gridRowEnd: 2, gridColumnStart: 1, gridColumnEnd: 3, display: 'flex', alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly', }}>
-				<h1>{this.props.data.bandName}</h1>
+				<p style={{fontSize: '200%', margin: '0px'}}>{this.props.data.bandName}</p>
 			</div>
 		)
 		
@@ -181,15 +181,12 @@ class Chart extends Component {
 				</div>
 			)
 		}
-		
-
-
 
 		return (
 			<div>
-				<div style={{height: 50}}></div>
-				<div className="chartBorder" style={{display: 'grid', gridTemplateColumns: '20% auto 20%', gridTemplateRows: 400}}>
-					<div style={{display: 'grid', gridColumnStart: 2, gridColumnEnd: 3, gridRowStart: 1, gridRowEnd: numMembers+3, border: '1px solid black', borderRadius: 20, gridTemplateRows: piece}}>
+				<div style={{height: 60}}></div>
+				<div style={{display: 'grid', gridTemplateColumns: '20% auto 20%', gridTemplateRows: adjustedHeight}}>
+					<div className="chartBorder" style={{display: 'grid', gridColumnStart: 2, gridColumnEnd: 3, gridRowStart: 1, gridRowEnd: numMembers+3, border: '1px solid black', borderRadius: 20, gridTemplateRows: piece}}>
 						{rowDivs}
 					</div>
 				</div>
