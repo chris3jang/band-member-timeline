@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Member from './Member';
+import FormMember from './FormMember';
 
 class DataForm extends Component {
 
@@ -67,7 +67,7 @@ class DataForm extends Component {
 		            	<button style={{display: 'inline-block', margin: 'auto', marginTop: 10}} onClick={this.handleAddMember.bind(this)}>+</button>
 			        	<p style={{display: 'inline-block'}}>Members:</p>
 		            </div>
-		            {Array(this.state.members).fill(<Member></Member>)}
+		            {Array(this.state.members).fill(<FormMember></FormMember>)}
 					<input type="submit" value="Submit"></input>
 				</form>
 			</div>

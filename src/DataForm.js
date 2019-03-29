@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Member from './Member';
+import FormMember from './FormMember';
 import './form.css';
 
 class DataForm extends Component {
@@ -168,7 +168,7 @@ class DataForm extends Component {
             			<button className="addButton" onClick={this.handleAddMember.bind(this)}>+</button>
 			        	<p style={{display: 'inline-block'}}>Members:</p>
 		            </div>
-		            {Array(this.state.members).fill(<Member></Member>)}
+		            {Array(this.state.members).fill(<FormMember></FormMember>)}
 		            {this.state.errors.length > 0 
 					? 
 					<p style={{color: 'red'}}>{this.state.errors}</p>

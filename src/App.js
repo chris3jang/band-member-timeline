@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import Member from './Member';
 import Gantt from './Gantt';
 import Chart from './Chart';
 import DataForm from './DataForm';

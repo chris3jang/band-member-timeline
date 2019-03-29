@@ -36,34 +36,23 @@ class Chart extends Component {
 			return latestYear;
 		}
 
-
-
 		const numMembers = this.props.data.members.length;
-
 		const adjustedHeight = (numMembers > 8) ? (400 + (numMembers - 8) * 50) : 400;
 		const gTR = adjustedHeight/(numMembers+2);
-
 		let piece = "";
 		for(let i = 0; i < (numMembers+2); i++) {
 			piece+=`${gTR}px`;
 			if(i != numMembers + 1) piece+=" ";
 		}
-		console.log('piece',piece)
 
-		const rowDivs = [];
-
-		const allInstruments = [];
-		const colors = ['#4e79a7', '#59a14f', '#e15759', '#edc948', '#f28e2b', '#b07aa1', '#ff9da7', '#76b7b2', '#9c755f', '#bab0ac'];
-		//['red', 'blue', 'yellow', 'green', 'orange', 'purple']
+		const rowDivs = [], allInstruments = [], colors = ['#4e79a7', '#59a14f', '#e15759', '#edc948', '#f28e2b', '#b07aa1', '#ff9da7', '#76b7b2', '#9c755f', '#bab0ac'];
 		for(let i = 0; i < numMembers; i++) {
 			this.props.data.members[i].instruments.forEach(instrument=> {
 				if(!allInstruments.includes(instrument)) allInstruments.push(instrument);
 			})
 		}
 
-		const instrumentColorTuples = [];
-		const instrColorArray = [];
-
+		const instrumentColorTuples = [], instrColorArray = [];
 		for(let i = 0; i < allInstruments.length; i++) {
 			instrumentColorTuples[allInstruments[i]] = colors[i];
 			instrColorArray.push(
@@ -73,29 +62,19 @@ class Chart extends Component {
 				</div>
 			)
 		}
-
-		console.log('allInstruments', allInstruments)
-		console.log('instrumentColorTuples', instrumentColorTuples)
-
 		rowDivs.push(
 			<div style={{gridRowStart: 1, gridRowEnd: 2, gridColumnStart: 1, gridColumnEnd: 3, display: 'flex', alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly', }}>
 				<p style={{fontSize: '200%', margin: '0px'}}>{this.props.data.bandName}</p>
 			</div>
 		)
-		
 		rowDivs.push(
 			<div style={{gridRowStart: 2, gridRowEnd: 3, gridColumnStart: 1, gridColumnEnd: 3, display: 'flex', alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly', }}>
 				{instrColorArray}
 			</div>
 		)
 
-
-		let earliestYear = 19;
-		let latestYear = 20;
-
 		const firstYears = [], lastYears = [];
-		let years, member;
-
+		let earliestYear = 19, latestYear = 20, years, member;
 		for(let i = 0; i < numMembers; i++) {
 			member = this.props.data.members[i];
 			member.timeframe.forEach((timeframe) => {
@@ -103,31 +82,17 @@ class Chart extends Component {
 				firstYears.push(parseInt(years[0]))
 				lastYears.push(parseInt(years[1]))
 			})
-
-			//if((firstYear < earliestYear && ((firstYear <= 19 && earliestYear <= 19) || (firstYear >= 20 && earliestYear >= 20))) || (firstYear >= 20 && earliestYear <= 19)) earliestYear = firstYear;
-			//if((lastYear > latestYear && ((lastYear <= 19 && latestYear <= 19) || (lastYear >= 20 && latestYear >= 20)))|| (lastYear <= 19 && latestYear >= 20)) latestYear = lastYear;
-
 		}
-
 		earliestYear = getEarliest(firstYears);
 		latestYear = getLatest(lastYears)
 
 		for(let i = 0; i < numMembers; i++) {
-
-			let member = this.props.data.members[i]
-			let tf = member.timeframe[0]
-			let years = tf.split('-')
-			let firstYear = parseInt(years[0])
-			let lastYear = parseInt(years[1])
-
-
-
+			let member = this.props.data.members[i];
+			let tf = member.timeframe[0];
+			let years = tf.split('-');
+			const firstYear = parseInt(years[0]), lastYear = parseInt(years[1]);
 			let columnPercentage = calcTimeFrame(firstYear, lastYear)/(calcTimeFrame(earliestYear, latestYear))
-
-			//let absentTimeFrames = [];
-			let columnPercentageString = "";
-			let absentTimeFrame = [];
-			let start, end;
+			let columnPercentageString = "", start, end;
 			if(firstYear === earliestYear && lastYear === latestYear) {
 				columnPercentageString += '100%';
 			}
@@ -159,7 +124,6 @@ class Chart extends Component {
 			for(let j = 0; j < this.props.data.members[i].instruments.length; j++) {
 				memberColors[this.props.data.members[i].instruments[j]] = instrumentColorTuples[this.props.data.members[i].instruments[j]]
 			}
-
 
 			rowDivs.push(
 				<div style={{display: 'grid', gridTemplateColumns: '20% 75% 5%', gridRowStart: i+3, gridRowEnd: i+4, gridColumnStart: 1, gridColumnEnd: 3}}>

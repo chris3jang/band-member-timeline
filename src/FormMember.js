@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './form.css';
 
 
-class Member extends Component {
+class FormMember extends Component {
 
 	state = {
 		instrInputs: 1,
@@ -51,4 +51,4 @@ class Member extends Component {
 	}
 }
 
-export default Member;
+export default FormMember;
