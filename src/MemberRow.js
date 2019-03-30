@@ -4,7 +4,7 @@ class MemberRow extends Component {
 
 	render() {
 
-		const { data, getEarliest, getLatest, calcTimeFrame, colors, makeGridTemplate } = this.props
+		const { data, getEarliest, getLatest, calcTimeFrame, colors, makeGridTemplate, memberNum } = this.props
 
 		const firstYears = [], lastYears = [];
 		data.timeframe.forEach((timeframe) => {
@@ -119,13 +119,20 @@ class MemberRow extends Component {
 		cP.push(calcTimeFrame(latestYear, this.props.latestYear)*100/(calcTimeFrame(this.props.earliestYear, this.props.latestYear)));
 
 		return (
-			<div className="MemberRowRoot" style={{gridColumnStart: 1, gridColumnEnd: 9, gridRowStart: 2, gridRowEnd: 3, display: 'grid', gridTemplateColumns: makeGridTemplate(cP)}}>
-				<div className="divColumnsContainer" style={{
-					gridColumnStart: 2, 
-					gridColumnEnd: 3, 
-					display: 'grid',
-					gridTemplateColumns: makeGridTemplate(divPercentages)}}>
-					{divColumns}
+			<div style={{display: 'grid', gridTemplateColumns: '20% 75% 5%', gridRowStart: memberNum+3, gridRowEnd: memberNum+4, gridColumnStart: 1, gridColumnEnd: 3}}>
+				<div style={{gridColumnStart: 1, gridColumnEnd: 2, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+					<p>{data.name}</p>
+				</div>
+				<div style={{gridColumnStart: 2, gridColumnEnd: 3, display: 'grid', gridTemplateRows: '20% 60% 20%', gridTemplateColumns: '12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%'}}>
+					<div className="MemberRowRoot" style={{gridColumnStart: 1, gridColumnEnd: 9, gridRowStart: 2, gridRowEnd: 3, display: 'grid', gridTemplateColumns: makeGridTemplate(cP)}}>
+						<div className="divColumnsContainer" style={{
+							gridColumnStart: 2, 
+							gridColumnEnd: 3, 
+							display: 'grid',
+							gridTemplateColumns: makeGridTemplate(divPercentages)}}>
+							{divColumns}
+						</div>
+					</div>
 				</div>
 			</div>
 		)

@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
 
-import Gantt from './Gantt';
 import Chart from './Chart';
 import DataForm from './DataForm';
 
 class App extends Component {
 
 	state = {
-    //members: 1,
     data: null
 	};
 
@@ -18,7 +16,6 @@ class App extends Component {
     });
   };
   	
-
 	render() {
 	    return (
 	      <div className="App" style={{fontFamily: 'Helvetica'}}>
