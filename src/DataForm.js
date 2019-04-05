@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import FormMember from './FormMember';
-import './form.css';
+import './DataForm.css';
 
 class DataForm extends Component {
 
@@ -78,21 +78,12 @@ class DataForm extends Component {
 	    			emptyTimeFrameIndexes.push([i, j]);
 	    			isValid = false;
 	    		}
-	    		console.log('tf.substring(0, 2)', tf.substring(0, 2), !isNaN(parseFloat(tf.substring(0, 2))) && isFinite(tf.substring(0, 2)))
-	    		console.log('tf.substring(3, 5)', tf.substring(3, 5), !isNaN(parseFloat(tf.substring(3, 5))) && isFinite(tf.substring(3, 5)))
-	    		console.log('tf.substring(2, 3)', tf.substring(2, 3))
 	    		if((!(!isNaN(parseFloat(tf.substring(0, 2))) && isFinite(tf.substring(0, 2)))) || (!(!isNaN(parseFloat(tf.substring(3, 5))) && isFinite(tf.substring(3, 5)))) || tf.substring(2, 3) !== '-' || tf.length !== 5) {
 	    			invalidTimeFrameIndexes.push([i, j]);
 	    			isValid = false;
 	    		}
 	    	})
 	    })
-
-	    console.log("EMPTY NAME ERROR INDEXES:", emptyMemberNameIndexes);
-	    console.log("EMPTY INSTR ERROR INDEXES:", emptyInstrumentIndexes);
-	    console.log("EMPTY TIMEFRAME ERROR INDEXES:", emptyTimeFrameIndexes);
-	    console.log("INVALID TIMEFRAME ERROR INDEXES:", invalidTimeFrameIndexes);
-
 
 	    const memberEls = e.target.getElementsByClassName('member');
 	    let instrInputEls = [], tfInputEls = [];
@@ -152,13 +143,9 @@ class DataForm extends Component {
 	    	}
 	    	this.setState({errors: errors})
 	    }
-
-
     }
 
-
     render() {
-
 		return (
 			<div>
 				<form className="form" action="" onSubmit={this.handleSubmit.bind(this)}>
